@@ -1,4 +1,4 @@
-# 越疆RC7AS机械臂模型（SW21）＋大寰电动二指夹爪（165-90）＋URDF文件
+# 越疆 RC7AS 机械臂与大寰电动二指夹爪的 SolidWorks 2021、STEP 和 ROS 2 URDF 模型。
 
 本仓库保存越疆的RC7AS机械臂的 SolidWorks 装配体+电动二指夹爪和 STEP 通用模型，
 用于机械结构查看、模型转换以及后续 ROS 2 / URDF 开发。
