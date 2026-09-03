@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="dobot_cr7_gripper_v6">
+  <link
+    name="base_link" />
+  <joint
+    name="base_link_to_b0"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="b0" />
+  </joint>
+  <link
+    name="b0">
+    <inertial>
+      <origin
+        xyz="4.1733020741553E-06 -0.002126922884313 0.0289949925386515"
+        rpy="0 0 0" />
+      <mass
+        value="2.45374588609225" />
+      <inertia
+        ixx="0.00392703244780681"
+        ixy="1.10752110012074E-07"
+        ixz="4.92142898534936E-07"
+        iyy="0.00363144728266762"
+        iyz="1.6867983087399E-05"
+        izz="0.00581838177998014" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/b0.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/b0.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="l1">
+    <inertial>
+      <origin
+        xyz="2.21022348131927E-07 0.00610392350001822 0.0553627609927616"
+        rpy="0 0 0" />
+      <mass
+        value="3.64256245000588" />
+      <inertia
+        ixx="0.00718544646864235"
+        ixy="-5.94566324465764E-09"
+        ixz="-6.49848019687535E-08"
+        iyy="0.00685903542400403"
+        iyz="-0.00105850868464744"
+        izz="0.00773256149484338" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j1"
+    type="revolute">
+    <origin
+      xyz="0 -0.00021637 0.0713"
+      rpy="0 0 0" />
+    <parent
+      link="b0" />
+    <child
+      link="l1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="10.0"
+      velocity="1.0" />
+  </joint>
+  <link
+    name="l2">
+    <inertial>
+      <origin
+        xyz="-4.59527627217488E-08 0.187062461058014 -0.0580208770127095"
+        rpy="0 0 0" />
+      <mass
+        value="8.24352301427932" />
+      <inertia
+        ixx="0.0207959469870456"
+        ixy="-1.78471020106079E-09"
+        ixz="-4.18371845293363E-09"
+        iyy="0.0160569655745956"
+        iyz="-1.08573393947785E-08"
+        izz="0.0219167054398118" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j2"
+    type="revolute">
+    <origin
+      xyz="0 0.0713 0.0757"
+      rpy="1.5708 0 0" />
+    <parent
+      link="l1" />
+    <child
+      link="l2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="10.0"
+      velocity="1.0" />
+  </joint>
+  <link
+    name="l3">
+    <inertial>
+      <origin
+        xyz="-0.000337463023692339 -0.106336745858494 -0.0460199147763043"
+        rpy="0 0 0" />
+      <mass
+        value="5.13652110851556" />
+      <inertia
+        ixx="0.00954934825788366"
+        ixy="-6.93913230410585E-06"
+        ixz="8.83210318699203E-07"
+        iyy="0.00736445106905854"
+        iyz="0.000288366873727222"
+        izz="0.0101629847929951" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j3"
+    type="revolute">
+    <origin
+      xyz="0 0.377 0"
+      rpy="3.1416 0 0" />
+    <parent
+      link="l2" />
+    <child
+      link="l3" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="10.0"
+      velocity="1.0" />
+  </joint>
+  <link
+    name="l4">
+    <inertial>
+      <origin
+        xyz="-5.09615017031343E-05 -0.0159872037532077 0.0457383588656379"
+        rpy="0 0 0" />
+      <mass
+        value="1.43706105399006" />
+      <inertia
+        ixx="0.00158497446693382"
+        ixy="-4.08635894240934E-07"
+        ixz="7.96065936777005E-07"
+        iyy="0.00145962530684959"
+        iyz="0.000253746595779745"
+        izz="0.00152513942890828" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j4"
+    type="revolute">
+    <origin
+      xyz="-0.00097471 -0.307 0.0202"
+      rpy="0 0 0" />
+    <parent
+      link="l3" />
+    <child
+      link="l4" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="10.0"
+      velocity="1.0" />
+  </joint>
+  <link
+    name="l5">
+    <inertial>
+      <origin
+        xyz="-0.00017277947384858 0.0121518239336171 0.0459431419721321"
+        rpy="0 0 0" />
+      <mass
+        value="1.49205328420549" />
+      <inertia
+        ixx="0.00164391582846018"
+        ixy="5.8135079679372E-07"
+        ixz="1.08059931231378E-08"
+        iyy="0.00151560882568869"
+        iyz="-0.000261884598827414"
+        izz="0.00158193041136837" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j5"
+    type="revolute">
+    <origin
+      xyz="-0.00021113 -0.0665 0.0495"
+      rpy="1.5708 0 0" />
+    <parent
+      link="l4" />
+    <child
+      link="l5" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="10.0"
+      velocity="1.0" />
+  </joint>
+  <link
+    name="l6">
+    <inertial>
+      <origin
+        xyz="-9.11270113711053E-06 -0.000170566504042902 0.0206939848447974"
+        rpy="0 0 0" />
+      <mass
+        value="0.790611055185509" />
+      <inertia
+        ixx="0.000695158975705042"
+        ixy="1.76823785431883E-07"
+        ixz="-1.63442777812014E-07"
+        iyy="0.000784252751920807"
+        iyz="-3.95644194393427E-07"
+        izz="0.000565160085621698" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.647058823529412 0.619607843137255 0.588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j6"
+    type="revolute">
+    <origin
+      xyz="-0.00015716 0.0985 0.0495"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="l5" />
+    <child
+      link="l6" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.57"
+      upper="1.57"
+      effort="10.0"
+      velocity="1.0" />
+  </joint>
+  <link
+    name="l7">
+    <inertial>
+      <origin
+        xyz="-0.00782180039583221 0.0228053393289578 0.0115252284273227"
+        rpy="0 0 0" />
+      <mass
+        value="0.0186467758678086" />
+      <inertia
+        ixx="6.47182441861692E-06"
+        ixy="1.52710717840413E-07"
+        ixz="3.60703793858103E-09"
+        iyy="2.96061145428906E-06"
+        iyz="4.86134876480409E-10"
+        izz="5.33586013930932E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.752941176470588 0.733333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j7"
+    type="revolute">
+    <origin
+      xyz="-0.051462 -0.011387 0.10168"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="l6" />
+    <child
+      link="l7" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.78539816339"
+      upper="0.78539816339"
+      effort="10.0"
+      velocity="1.0" />
+  </joint>
+  <link
+    name="l8">
+    <inertial>
+      <origin
+        xyz="0.00439538089354101 0.0225682763464216 0.0268140897890907"
+        rpy="0 0 0" />
+      <mass
+        value="0.0114281719599983" />
+      <inertia
+        ixx="6.64962247456642E-06"
+        ixy="-7.94858050399171E-07"
+        ixz="9.06362561270214E-09"
+        iyy="3.38558307343057E-06"
+        iyz="-2.52369986041215E-09"
+        izz="3.79492320463891E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l8.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l8.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j8"
+    type="revolute">
+    <origin
+      xyz="-0.035377 0.010679 -0.015362"
+      rpy="0 0 0" />
+    <parent
+      link="l7" />
+    <child
+      link="l8" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.78539816339"
+      upper="0.78539816339"
+      effort="10.0"
+      velocity="1.0" />
+    <mimic
+      joint="j7"
+      multiplier="1"
+      offset="0" />
+  </joint>
+  <link
+    name="l9">
+    <inertial>
+      <origin
+        xyz="0.0021672974500126 -0.010100928110193 -0.016041743343971"
+        rpy="0 0 0" />
+      <mass
+        value="0.0130682756929982" />
+      <inertia
+        ixx="1.21102165837284E-06"
+        ixy="-1.53656743295185E-07"
+        ixz="-5.31864700094401E-10"
+        iyy="9.49226741264766E-07"
+        iyz="1.47566575441954E-09"
+        izz="1.07543176794534E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l9.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.772549019607843 0.752941176470588 0.733333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l9.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j9"
+    type="revolute">
+    <origin
+      xyz="0.013469 0.053316 0.011143"
+      rpy="3.1416 0 0" />
+    <parent
+      link="l8" />
+    <child
+      link="l9" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.78539816339"
+      upper="0.78539816339"
+      effort="10.0"
+      velocity="1.0" />
+    <mimic
+      joint="j7"
+      multiplier="1"
+      offset="0" />
+  </joint>
+  <link
+    name="l7-right">
+    <inertial>
+      <origin
+        xyz="0.00774845923850054 -0.0228053393289464 -0.0115746551454446"
+        rpy="0 0 0" />
+      <mass
+        value="0.0186467758678085" />
+      <inertia
+        ixx="6.47182441861688E-06"
+        ixy="1.52710717840424E-07"
+        ixz="-3.60703794116798E-09"
+        iyy="2.96061145428907E-06"
+        iyz="-4.86134876829569E-10"
+        izz="5.33586013930932E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l7-right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.796078431372549 0.823529411764706 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l7-right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j7-right"
+    type="revolute">
+    <origin
+      xyz="0.051388 -0.011713 0.10168"
+      rpy="-1.5708 0 3.1416" />
+    <parent
+      link="l6" />
+    <child
+      link="l7-right" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.78539816339"
+      upper="0.78539816339"
+      effort="10.0"
+      velocity="1.0" />
+    <mimic
+      joint="j7"
+      multiplier="1"
+      offset="0" />
+  </joint>
+  <link
+    name="l8-right">
+    <inertial>
+      <origin
+        xyz="-0.00456555777808542 -0.0225682763464217 -0.0267856400593594"
+        rpy="0 0 0" />
+      <mass
+        value="0.0114281719599983" />
+      <inertia
+        ixx="6.64962247456638E-06"
+        ixy="-7.94858050399165E-07"
+        ixz="-9.06362561918104E-09"
+        iyy="3.38558307343056E-06"
+        iyz="2.52369986222923E-09"
+        izz="3.79492320463896E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l8-right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l8-right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j8-right"
+    type="revolute">
+    <origin
+      xyz="0.035474 -0.010679 0.015137"
+      rpy="0 0 0" />
+    <parent
+      link="l7-right" />
+    <child
+      link="l8-right" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.78539816339"
+      upper="0.78539816339"
+      effort="10.0"
+      velocity="1.0" />
+    <mimic
+      joint="j7"
+      multiplier="1"
+      offset="0" />
+  </joint>
+  <link
+    name="l9-right">
+    <inertial>
+      <origin
+        xyz="-0.00226907715911154 0.0101009281101936 0.0160152832397724"
+        rpy="0 0 0" />
+      <mass
+        value="0.0130682756929982" />
+      <inertia
+        ixx="1.21102165837287E-06"
+        ixy="-1.53656743294214E-07"
+        ixz="5.3186470007991E-10"
+        iyy="9.49226741264744E-07"
+        iyz="-1.47566575475493E-09"
+        izz="1.07543176794535E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l9-right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dobot_cr7_gripper_v6_description/meshes/l9-right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j9-right"
+    type="revolute">
+    <origin
+      xyz="-0.01354 -0.053316 -0.011057"
+      rpy="3.1416 0 0" />
+    <parent
+      link="l8-right" />
+    <child
+      link="l9-right" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.78539816339"
+      upper="0.78539816339"
+      effort="10.0"
+      velocity="1.0" />
+    <mimic
+      joint="j7"
+      multiplier="1"
+      offset="0" />
+  </joint>
+</robot>
