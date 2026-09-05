@@ -1,0 +1,8 @@
+controller_joint_names:
+  - j1
+  - j2
+  - j3
+  - j4
+  - j5
+  - j6
+  - gripper_slider_joint
