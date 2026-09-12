@@ -1,38 +1,14 @@
-# urdf_sw_description
+# `urdf_sw_description`（ROS 2 Foxy 旧版）
 
-本包由 SolidWorks SW2URDF 导出的 ROS 1 包 `URDF-SW` 转换而来，用于
-ROS 2 Foxy 中的 robot_state_publisher、Joint State Publisher GUI 和 RViz2 显示。
-原始 F 盘目录没有修改。
+本目录是仓库中旧 Foxy/RViz2 description 包的另一份历史副本，和 `ROS2/RViz2/urdf_sw_description/` 用途相同。它只用于 SolidWorks URDF 的显示和 TF 检查，不是 Humble 仿真包。
 
-## 放入工作空间
-
-将整个 `urdf_sw_description` 目录复制到：
+旧版坐标系为：
 
 ```text
-~/Desktop/dev_ws/src/urdf_sw_description
+base_link -> b0 -> l1 -> l2 -> l3 -> l4 -> l5 -> l6
+                                             └─ gripper_slider_joint -> gripper_link
 ```
 
-不能只复制 URDF，因为模型还依赖 `meshes`、`launch`、`rviz`、
-`package.xml` 和 `CMakeLists.txt`。
+`base_link` 是虚拟根，`b0` 是实体底座；`l6` 是六轴机械臂末端；`gripper_link` 是导出后的末端可视化 link，不代表已经具备真实夹爪开合控制。没有末端工具时使用 `l6` 作为末端；需要工具时增加 `tool0`/`tcp` fixed frame，并写清相对位姿。
 
-## 构建和启动（ROS 2 Foxy）
-
-```bash
-source /opt/ros/foxy/setup.bash
-cd ~/Desktop/dev_ws
-colcon build --symlink-install --packages-select urdf_sw_description
-source install/setup.bash
-ros2 launch urdf_sw_description display.launch.py
-```
-
-## 转换说明
-
-- 增加了固定根坐标系 `base_link`；
-- 包名、机器人名、URDF 文件名和所有 mesh URI 已改为 ROS 2 友好格式；
-- `link` 和 `jlink` 分别改名为 `gripper_link` 和 `gripper_slider_joint`；
-- 原导出文件错误地让直线滑块 mimic 腕关节 `j6`，该关系已删除；
-- 机械臂 `j1` 到 `j6` 保留导出的 `-1.57` 到 `1.57 rad` 显示范围；
-- 滑块使用临时 `-0.02` 到 `0.02 m` 显示范围。
-
-这些限位、effort 和 velocity 不是厂家或实机安全参数。用于 Gazebo、MoveIt 2、
-ros2_control 或真实机械臂前，必须根据厂家数据、丝杠导程和实际机械行程重新确认。
+通用转换模板见 [`docs/ROS2_Foxy_URDF_通用转换模板.md`](../../docs/ROS2_Foxy_URDF_通用转换模板.md)。当前 Humble 主线见 [`ROS2/Humble/README.md`](../../ROS2/Humble/README.md)。

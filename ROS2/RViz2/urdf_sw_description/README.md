@@ -1,38 +1,38 @@
-# urdf_sw_description
+# urdf_sw_description（ROS 2 Foxy / RViz2）
 
-本包由 SolidWorks SW2URDF 导出的 ROS 1 包 `URDF-SW` 转换而来，用于
-ROS 2 Foxy 中的 robot_state_publisher、Joint State Publisher GUI 和 RViz2 显示。
-原始 F 盘目录没有修改。
+这是旧版 Foxy/RViz2 description 包，用于验证 SolidWorks 导出的六轴机械臂模型、STL 路径、TF 和关节显示。它不包含 Gazebo、`ros2_control`、MoveIt 2 或真实硬件驱动。
 
-## 放入工作空间
-
-将整个 `urdf_sw_description` 目录复制到：
+## 坐标系和末端
 
 ```text
-~/Desktop/dev_ws/src/urdf_sw_description
+base_link                         虚拟根坐标系
+└── base_link_to_b0 [fixed]
+    └── b0 -> l1 -> l2 -> l3 -> l4 -> l5 -> l6
+        └── gripper_slider_joint [prismatic]
+            └── gripper_link
 ```
 
-不能只复制 URDF，因为模型还依赖 `meshes`、`launch`、`rviz`、
-`package.xml` 和 `CMakeLists.txt`。
+`base_link` 是统一 TF 根，`b0` 是实体底座。当前 Foxy 包没有真实的二指夹爪开合机构；`gripper_link` 是末端可视化 link，`gripper_slider_joint` 是导出后整理的显示用直线关节。如果没有末端工具，可以把 `l6` 作为末端；如果需要工具坐标系，使用 fixed joint 添加 `tool0` 和 `tcp`，并记录真实的 xyz/rpy。
 
-## 构建和启动（ROS 2 Foxy）
+通用转换步骤见仓库中的 [`docs/ROS2_Foxy_URDF_通用转换模板.md`](../../../docs/ROS2_Foxy_URDF_通用转换模板.md)。
+
+## 放入 Foxy 工作空间
 
 ```bash
 source /opt/ros/foxy/setup.bash
-cd ~/Desktop/dev_ws
+mkdir -p ~/foxy_ws/src
+cp -a ROS2/RViz2/urdf_sw_description ~/foxy_ws/src/
+cd ~/foxy_ws
 colcon build --symlink-install --packages-select urdf_sw_description
 source install/setup.bash
 ros2 launch urdf_sw_description display.launch.py
 ```
 
-## 转换说明
+RViz2 中将 `Fixed Frame` 设置为 `base_link`，确认 `RobotModel` 为 `Ok`。拖动 `j1` 到 `j6` 和末端显示关节，检查旋转轴、零位和行程是否符合 SolidWorks 装配体。
 
-- 增加了固定根坐标系 `base_link`；
-- 包名、机器人名、URDF 文件名和所有 mesh URI 已改为 ROS 2 友好格式；
-- `link` 和 `jlink` 分别改名为 `gripper_link` 和 `gripper_slider_joint`；
-- 原导出文件错误地让直线滑块 mimic 腕关节 `j6`，该关系已删除；
-- 机械臂 `j1` 到 `j6` 保留导出的 `-1.57` 到 `1.57 rad` 显示范围；
-- 滑块使用临时 `-0.02` 到 `0.02 m` 显示范围。
+## 说明
 
-这些限位、effort 和 velocity 不是厂家或实机安全参数。用于 Gazebo、MoveIt 2、
-ros2_control 或真实机械臂前，必须根据厂家数据、丝杠导程和实际机械行程重新确认。
+- `package://urdf_sw_description/meshes/...` 的包名必须与 `package.xml` 一致；
+- Linux 区分 `.STL` 和 `.stl` 的大小写；
+- 显示测试限位、质量和惯量不能直接用于仿真或实机；
+- 需要 Gazebo/MoveIt 2 时，使用仓库中的 `ROS2/Humble/` 主线，不要把两个包混在同一工作空间中。

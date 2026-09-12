@@ -1,0 +1,21 @@
+# ROS 2 / Colcon generated directories
+**/build/
+**/install/
+**/log/
+
+# Python, editor, and operating-system files
+**/__pycache__/
+*.py[cod]
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local ROS runtime data
+.ros/
+
+# Local backups and temporary exports
+*.bak
+*.bak_*
+*.save
+*.tmp

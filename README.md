@@ -1,147 +1,151 @@
 # SW21-URDF-STP
 
-六轴机械臂与电动二指夹爪的 SolidWorks 2021、STEP、原始 SW2URDF 导出文件，以及可在 ROS 2 / RViz2 中加载的 URDF description 功能包。
+越疆 CR7AS 六轴机械臂与末端执行器的 SolidWorks、STEP、URDF 和 ROS 2 资料仓库。
 
-> 当前 ROS 2 包用于模型、关节状态和 TF 的可视化验证，不是可直接用于 Gazebo / Isaac Sim、MoveIt 2、`ros2_control` 或真实机械臂的完整工程。
+本仓库同时保存两个 ROS 2 目标：
 
-![机械臂与夹爪模型预览](Images/000.png)
+- **Foxy / RViz2 旧版**：用于从 SolidWorks 导出物转换成 ROS 2 description 包并检查 TF、网格和关节显示；
+- **Humble 当前主线**：适用于 Ubuntu 22.04 + ROS 2 Humble，增加 Gazebo Classic、`ros2_control` 和 MoveIt 2 配置。
 
-## 仓库内容
+URDF 的 link、joint 和 mesh XML 在 Foxy/Humble 间基本通用；差异主要在构建依赖、launch、仿真控制链和 MoveIt 配置。请先阅读对应的通用模板，再阅读具体包的 README。
 
-| 路径 | 内容 | 当前用途 |
-| --- | --- | --- |
-| `SolidWorks/CR7AS+AG165-90.zip` | SolidWorks 2021 Pack and Go 压缩包 | 查看和继续编辑 CAD 装配体 |
-| `STEP/CR7AS+AG-160-95.STEP` | AP203 STEP 通用交换文件 | 在其他 CAD 软件中查看或转换实体几何 |
-| `Images/` | 模型预览图 | 快速查看模型外观 |
-| `URDF/URDF-ROS1/` | SolidWorks 插件导出的 ROS 1 / Catkin 风格原始包 | 保留原始导出结果、用于转换对照 |
-| `URDF/URDF-ROS2/` | 整理后的 ROS 2 description 包 | 在 ROS 2 中构建并用 RViz2 显示 |
-| `ROS2/RViz2/urdf_sw_description/` | 与 `URDF/URDF-ROS2/` 内容相同的 ROS 2 包副本 | 按用途直接复制到 ROS 2 工作空间 |
-| `SolidWorks2021_URDF到ROS2Foxy_RViz2通用转换模板.md` | 本模型的完整转换说明与检查方法 | 理解转换过程和排查问题 |
-| `SW2URDF转ROS2_Foxy通用转换模板_公开版.md` | 面向其他 SW2URDF 项目的通用模板 | 转换其他机械臂或夹爪模型 |
+## 快速导航
 
-SolidWorks 与 STEP 文件名中的夹爪型号写法并不一致（`AG165-90` 与 `AG-160-95`）。仓库中没有提供可核验的料号说明，请在制造、采购或实机匹配前自行确认准确型号和版本。
+| 目标 | 文档 |
+| --- | --- |
+| 总览和仓库布局 | 当前文档 |
+| SolidWorks URDF -> ROS 2 Foxy 通用转换 | [`docs/ROS2_Foxy_URDF_通用转换模板.md`](docs/ROS2_Foxy_URDF_通用转换模板.md) |
+| SolidWorks URDF -> ROS 2 Humble 通用转换 | [`docs/ROS2_Humble_URDF_通用转换模板.md`](docs/ROS2_Humble_URDF_通用转换模板.md) |
+| 旧 Foxy/RViz2 包 | [`ROS2/RViz2/urdf_sw_description/README.md`](ROS2/RViz2/urdf_sw_description/README.md) |
+| 当前 Humble 工作空间 | [`ROS2/Humble/README.md`](ROS2/Humble/README.md) |
+| Humble CR7AS description 包 | [`ROS2/Humble/src/cr7as_grasp/README.md`](ROS2/Humble/src/cr7as_grasp/README.md) |
+| Humble MoveIt 2 配置包 | [`ROS2/Humble/src/cr7as_grasp_moveit_config/README.md`](ROS2/Humble/src/cr7as_grasp_moveit_config/README.md) |
 
-## 当前 ROS 2 模型
+## 仓库布局
 
-ROS 2 功能包名为 `urdf_sw_description`，机器人以 `base_link` 为根坐标系，包含：
-
-- 9 个 link；
-- 1 个固定关节 `base_link_to_b0`；
-- 6 个旋转关节 `j1` 到 `j6`；
-- 1 个直线关节 `gripper_slider_joint`；
-- STL visual / collision 网格、惯性参数、RViz2 配置和 ROS 2 Python launch 文件。
-
-启动文件会同时打开：
-
-- `joint_state_publisher_gui`：通过滑块改变活动关节值；
-- `robot_state_publisher`：根据 URDF 和 `/joint_states` 发布 TF；
-- RViz2：显示 `RobotModel` 与 TF，固定坐标系为 `base_link`。
-
-## ROS 2 Foxy + RViz2 快速开始
-
-下面以 Ubuntu 20.04 + ROS 2 Foxy 和 `~/dev_ws` 工作空间为例。请先按照 ROS 2 官方文档正确安装 Foxy。
-
-### 1. 获取包含 Git LFS 大文件的仓库
-
-```bash
-sudo apt update
-sudo apt install git-lfs
-git lfs install
-git clone https://github.com/wky-1-dotcom/SW21-URDF-STP.git
-cd SW21-URDF-STP
-git lfs pull
+```text
+SW21-URDF-STP/
+├── README.md
+├── docs/
+│   ├── ROS2_Foxy_URDF_通用转换模板.md
+│   └── ROS2_Humble_URDF_通用转换模板.md
+├── SolidWorks/                       # CAD Pack and Go 文件
+├── STEP/                             # STEP 交换模型
+├── Images/                           # 模型预览图
+├── URDF/URDF-ROS1/                   # SW2URDF 原始 ROS 1 导出资料
+├── URDF/URDF-ROS2/                   # 旧 Foxy/RViz2 description 包
+├── ROS2/RViz2/urdf_sw_description/   # 旧 Foxy/RViz2 包的工作空间副本
+└── ROS2/Humble/                      # 当前 Humble 工作空间
+    ├── README.md
+    └── src/
+        ├── cr7as_grasp/
+        └── cr7as_grasp_moveit_config/
 ```
 
-GitHub 网页的 `Download ZIP` 可能无法可靠取得 Git LFS 管理的大文件，因此推荐使用 Git + Git LFS 克隆。若已经克隆仓库但 ZIP、STEP 或 SolidWorks 文件只有几百字节，请执行 `git lfs pull`。
+`URDF/URDF-ROS2/` 和 `ROS2/RViz2/urdf_sw_description/` 是旧 Foxy/RViz2 可视化资料的两个历史路径，内容用途相同。新的开发和仿真请使用 `ROS2/Humble/`，不要把旧包和 Humble 包放在同一个 ROS 工作空间的 `src/` 中一起构建。
 
-### 2. 安装显示和构建依赖
+## Foxy 版本：从 SolidWorks 导出物开始
 
-```bash
-sudo apt install \
-  python3-colcon-common-extensions \
-  ros-foxy-joint-state-publisher-gui \
-  ros-foxy-robot-state-publisher \
-  ros-foxy-rviz2
+旧 Foxy 包 `urdf_sw_description` 的模型拓扑是：
+
+```text
+base_link                         虚拟根坐标系
+└── base_link_to_b0 [fixed]
+    └── b0                         机械臂实体底座
+        └── j1 -> l1
+            └── j2 -> l2
+                └── j3 -> l3
+                    └── j4 -> l4
+                        └── j5 -> l5
+                            └── j6 -> l6
+                                └── gripper_slider_joint [prismatic]
+                                    └── gripper_link
 ```
 
-### 3. 放入工作空间并构建
+这里的 `base_link` 只是统一 TF 根，`b0` 才是实体底座。旧 Foxy 模型没有真实的二指夹爪开合机构；`gripper_link` 和 `gripper_slider_joint` 是导出后整理出的末端可视化部件，不能自动解释为真实夹爪控制。如果模型没有末端工具，`l6` 可以直接作为末端 link；如果要添加工具，建议增加 `tool0` 和 `tcp` 两个 fixed frame，并在文档中写清楚相对位姿。
 
-在仓库根目录执行：
+通用转换步骤见 [`docs/ROS2_Foxy_URDF_通用转换模板.md`](docs/ROS2_Foxy_URDF_通用转换模板.md)。
+
+### Foxy 快速构建
 
 ```bash
-mkdir -p ~/dev_ws/src
-cp -a ROS2/RViz2/urdf_sw_description ~/dev_ws/src/
-
 source /opt/ros/foxy/setup.bash
-cd ~/dev_ws
+mkdir -p ~/foxy_ws/src
+cp -a ROS2/RViz2/urdf_sw_description ~/foxy_ws/src/
+cd ~/foxy_ws
 colcon build --symlink-install --packages-select urdf_sw_description
 source install/setup.bash
-```
-
-必须复制整个 `urdf_sw_description` 目录，不能只复制 `.urdf` 文件，因为模型还依赖 `meshes`、`launch`、`rviz`、`package.xml` 和 `CMakeLists.txt`。
-
-### 4. 启动
-
-```bash
 ros2 launch urdf_sw_description display.launch.py
 ```
 
-正常情况下会出现 RViz2 和 Joint State Publisher GUI。拖动 `j1` 到 `j6` 或 `gripper_slider_joint` 的滑块，RViz2 中的模型应同步运动。
+RViz2 中将 `Fixed Frame` 设置为 `base_link`，确认 `RobotModel` 为 `Ok`，再通过 Joint State Publisher GUI 检查 `j1` 到 `j6` 和 `gripper_slider_joint` 的显示行为。
 
-如使用 Ubuntu 22.04 + ROS 2 Humble，可将命令中的 `foxy` 替换为 `humble`。该包只使用常规 ament、launch 和 RViz2 接口，但发布前仍建议在目标 ROS 2 发行版上重新构建并验证。
+## Humble 版本：当前 CR7AS 主线
 
-## ROS 1 原始包与 ROS 2 包的区别
+Humble 工作空间只包含两个已经验证的功能包：
 
-`URDF/URDF-ROS1/` 是 SW2URDF 的原始导出结果，采用 Catkin、ROS 1 XML launch 和原包资源路径，不能直接作为 ROS 2 包构建。它还保留了将夹爪滑块错误关联到腕关节 `j6` 的 mimic 配置，因此仅作为原始资料和转换对照。
+```text
+ROS2/Humble/src/
+├── cr7as_grasp/
+└── cr7as_grasp_moveit_config/
+```
 
-ROS 2 包完成了以下整理：
+拓扑为：
 
-- 使用合法且统一的包名、机器人名、文件名和 `package://` mesh URI；
-- 改为 `ament_cmake`、ROS 2 Python launch 与 RViz2 配置；
-- 增加固定根坐标系 `base_link`；
-- 将通用的 `link` / `jlink` 重命名为 `gripper_link` / `gripper_slider_joint`；
-- 删除错误的夹爪滑块与 `j6` mimic 关系；
-- 提供 Joint State Publisher GUI，以便独立检查每个活动关节。
+```text
+base_link                         URDF 虚拟根
+└── base_link_to_b0 [fixed]
+    └── b0 -> l1 -> l2 -> l3 -> l4 -> l5 -> l6
+        └── gripper_base_j [fixed]
+            └── gripper_base       固定末端模型
+                └── grasp_tcp_j [fixed]
+                    └── grasp_tcp    工具/TCP坐标系
+```
 
-详细修改依据和“修改前 / 修改后”示例见：
+MoveIt SRDF 另外使用 `world` 作为 virtual joint 的父坐标系；`world` 不是 URDF 中的实体 link。当前 `gripper_base` 固定在 `l6` 上，`grasp_tcp` 没有 visual/collision，也没有夹爪开合关节。
 
-- [SolidWorks 2021 导出的 URDF 转为 ROS 2 Foxy / RViz2 可完整显示的通用模板](SolidWorks2021_URDF到ROS2Foxy_RViz2通用转换模板.md)
-- [SW2URDF 导出包转 ROS 2 Foxy 通用转换模板（公开版）](SW2URDF转ROS2_Foxy通用转换模板_公开版.md)
+### Humble 快速构建
 
-## CAD 文件使用说明
+```bash
+source /opt/ros/humble/setup.bash
+cd ROS2/Humble
+rosdep install --from-paths src --ignore-src -r -y
+colcon build --symlink-install --packages-select \
+  cr7as_grasp \
+  cr7as_grasp_moveit_config
+source install/setup.bash
+```
 
-### SolidWorks 2021
+启动 Gazebo Classic：
 
-1. 使用 Git LFS 完整下载 `SolidWorks/CR7AS+AG165-90.zip`。
-2. 将压缩包完整解压，保持 Pack and Go 生成的目录和文件关系不变。
-3. 使用 SolidWorks 2021 或能够兼容该版本文件的更高版本打开主 `.SLDASM` 装配体。
-4. 如果出现零件丢失，使用 SolidWorks 的“查找引用”重新定位同一解压目录中的 `.SLDPRT` 文件。
+```bash
+ros2 launch cr7as_grasp gazebo_control.launch.py
+```
 
-### STEP
+再在其他终端启动：
 
-`STEP/CR7AS+AG-160-95.STEP` 可导入 SolidWorks、FreeCAD、Fusion 360、Inventor、Creo 等支持 STEP 的 CAD 软件。它是 AP203 交换文件，主要用于传递几何和装配结构；不要假定它保留 SolidWorks 参数化特征树、原始配合关系或完整材料信息。
+```bash
+ros2 launch cr7as_grasp_moveit_config move_group.launch.py
+ros2 launch cr7as_grasp_moveit_config moveit_rviz.launch.py
+```
 
-## 已知限制
+完整依赖、控制器检查、仿真时钟和限制见 [`ROS2/Humble/README.md`](ROS2/Humble/README.md)。
 
-- 当前夹爪在 URDF 中只建模为一个直线活动部件，未完整表达丝杠、左右指爪和连杆之间的机械耦合。真实联动需要根据丝杠导程与机构关系补充关节、mimic 或控制逻辑。
-- `j1` 到 `j6` 的 `-1.57` 到 `1.57 rad`，以及夹爪滑块的 `-0.02` 到 `0.02 m`，是当前可视化参数，不是厂家或实机安全限位。
-- URDF 中的 effort、velocity、质量、惯量和坐标轴必须结合厂家资料、CAD 材料配置与实测再次校核。
-- visual 与 collision 当前复用详细 STL。RViz2 可以显示，但物理仿真和碰撞规划应另做低面数、封闭且尽量凸的 collision 几何。
-- 当前包没有 Gazebo / Isaac Sim 插件、transmission、`ros2_control` 配置、MoveIt 2 配置、控制器参数或厂商驱动。
-- RViz2 只负责可视化 URDF、TF、关节状态和其他 ROS 数据，不执行刚体动力学，也不能替代碰撞仿真或真实控制器。
+## CAD 和 STEP
 
-## 用于仿真或实机前
+- `SolidWorks/` 保存 SolidWorks Pack and Go 压缩包；解压时保持内部引用关系；
+- `STEP/` 保存跨 CAD 软件交换用的 STEP 模型；
+- SolidWorks、STEP、STL 和图片的公开再分发权限必须单独确认；
+- GitHub 网页不能完整预览 SolidWorks 装配体，下载 CAD 时应使用 Git LFS。
 
-在 Gazebo、Isaac Sim、MoveIt 2 或真实机械臂中使用前，至少需要完成：
+## 文件和安全边界
 
-1. 依据厂家数据校准 joint origin、axis、限位、速度、力矩、质量和惯量；
-2. 为机械臂和夹爪制作合适的简化 collision 模型，并在 MoveIt 2 Planning Scene 或仿真器中验证自碰撞与环境碰撞；
-3. 根据真实丝杠机构建立夹爪联动关系；
-4. 添加 `ros2_control`、transmission、控制器和对应硬件接口；
-5. 先在低速、限力、具备急停与隔离区域的条件下验证，不能仅凭 RViz2 显示结果驱动实机。
+- 不要提交 `build/`、`install/`、`log/`、Python 缓存或本地编辑器目录；
+- 不要把旧 Foxy 包、Humble 包、Gazebo FakeSystem 和真实硬件驱动混在同一个工作空间中；
+- 当前质量、惯量、关节限位、TCP 位姿和碰撞网格仍需结合厂家资料或实测校准；
+- 不要把现场 IP、序列号、密码、标定数据或未经授权的 CAD/网格上传到公开仓库；
+- RViz2 显示成功不等于可以驱动真实机械臂。
 
-## 许可证与引用
+## 许可证
 
-ROS 2 包的 `package.xml` 当前声明 `BSD-3-Clause`，但仓库根目录尚未提供对应的 `LICENSE` 文件，CAD、STEP、网格和图片的授权范围也未单独说明。在许可证补齐前，请不要默认这些模型资源已获得复制、修改或商用授权；公开复用或再分发前请先联系仓库作者确认。
-
-如果后续正式采用 BSD-3-Clause，建议在仓库根目录添加完整的 `LICENSE` 文件，并明确该许可证是否覆盖 CAD、STEP、STL、图片、代码和文档。
+ROS 2 包中的代码和文档可以根据项目需要补充许可证，但 CAD、STEP、STL、图片和机器人数据的授权范围需要另行确认。在仓库添加完整 `LICENSE` 前，不应默认所有资源都允许复制、修改或商用。

@@ -1,0 +1,7 @@
+# Limits for the Pilz planner. These are conservative simulation values;
+# verify them before using any real CR7AS hardware.
+cartesian_limits:
+  max_trans_vel: 0.25
+  max_trans_acc: 0.50
+  max_trans_dec: -0.50
+  max_rot_vel: 0.50
